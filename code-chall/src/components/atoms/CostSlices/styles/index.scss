@@ -1,0 +1,55 @@
+@import "../../../../styles/index.scss";
+
+.cost-container {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin: 2rem 0rem;
+  .type {
+    margin-right: 2rem;
+    font-size: 2rem;
+    padding: 1rem 1.2rem;
+    border-radius: 50%;
+    svg: {
+      display: block;
+      align-items: center;
+      margin: auto;
+    }
+  }
+  .material {
+    color: $orange-1;
+    background-color: $orange-4;
+  }
+  .labor {
+    color: $blue-1;
+    background-color: $blue-4;
+  }
+  .total {
+    color: $green-1;
+    background-color: $green-4;
+  }
+  .cost-content {
+    border-top: 0.2rem solid $gray-3;
+    text-align: left;
+    width: 100%;
+    .cost-type {
+      margin-top: 0.5rem;
+      text-transform: capitalize;
+      font-weight: bold;
+      span: {
+        font-weight: unset;
+      }
+    }
+    p {
+      font-weight: bold;
+      font-size: 1.5rem;
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+.cost-container:first-child {
+  .cost-content {
+    border-top: unset;
+  }
+}

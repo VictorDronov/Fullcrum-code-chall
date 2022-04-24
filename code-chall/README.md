@@ -44,3 +44,31 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+## Problem Statement: A client has asked us to solve a problem for them. 
+
+They are gathering a lot of information about issues at their buildings (i.e. “Hole in the wall”, or
+“Carpet needs to be replaced”). In order to prioritize and budget for these issues they want
+to provide their field technicians a tool to estimate the cost of repair. What they asked
+for was a simple interface to build an estimate on the fly. The business requirements were
+not very detailed, so we have some design liberties. They DID say that they need to
+distinguish between Material Costs, Labor Costs, and All Inclusive costs, and that a project
+could have one or many of these “line items”.
+Success Criteria: Fulcrum representative can open/access a clickable user interface that
+demonstrates your abilities as a front-end developer.
+Assessment Criteria:
+● Overall process to achieve a UI/UX that someone would use
+○ How do you communicate?
+○ How do you gather more information/feedback?
+○ How do you present ideas around UI/UX?
+○ How do you collaborate?
+● Overall design
+○ Styling principles and attention to detail
+○ Usability
+○ Efficiency
+○ Responsiveness (if necessary)
+● Overall Code Quality
+○ Cleanliness
+○ Organization
+○ Implementing best practice

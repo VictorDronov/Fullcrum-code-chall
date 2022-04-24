@@ -1,0 +1,26 @@
+// Colors
+@import "./reset.scss";
+@import "./fonts.scss";
+@import "./colors.scss";
+@import "./mediaQueries.scss";
+// Set 1rem = 10px
+html {
+  font-size: 62.5%;
+  font-family: $font;
+  letter-spacing: 0.1rem;
+}
+h1 {
+  font-size: 2.1rem;
+}
+h2 {
+  font-size: 1.8rem;
+}
+h3 {
+  font-size: 1.8rem;
+}
+// Set box-sizing globally for consisten behavior
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  max-width: 100%;
+}
