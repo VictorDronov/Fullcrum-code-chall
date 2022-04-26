@@ -1,5 +1,10 @@
 import { atom } from "recoil";
 
+export const lineAdd = atom<boolean>({
+  key: " line_add",
+  default: false,
+});
+
 export const materialCost = atom<number>({
   key: "material_cost",
   default: 0,
