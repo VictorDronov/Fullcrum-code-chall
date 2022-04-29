@@ -31,5 +31,5 @@ export default function CostSlice({
 
 interface ButtonProps {
   costType: "material" | "labor" | "total";
-  cost?: number;
+  cost?: any;
 }

@@ -1,0 +1,15 @@
+@import "../../../../styles/index.scss";
+
+.estimate-container {
+  backdrop-filter: blur(5px);
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  padding: 5rem 0rem;
+  @include bp($med) {
+    flex-direction: row;
+  }
+
+  .cost-items-container {
+  }
+}

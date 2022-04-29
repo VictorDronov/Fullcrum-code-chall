@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { laborCost, lineAdd, materialCost } from "../../../utils/state";
+import { useRecoilState } from "recoil";
+import { labor, material, lineAdd } from "../../../utils/state";
 import { InputLabel } from "../../atoms";
+import "./styles/index.scss";
 
 export default function CostsForm(): React.ReactElement {
-  const setLabor = useSetRecoilState(laborCost);
-  const setMaterial = useSetRecoilState(materialCost);
+  const [laborValue, setLabor] = useRecoilState<LaborFieldProps | null>(labor);
+  const [materialValue, setMaterial] =
+    useRecoilState<MaterialFieldProps | null>(material);
   const [added, setAdded] = useRecoilState(lineAdd);
 
   const {
@@ -19,46 +21,47 @@ export default function CostsForm(): React.ReactElement {
   const {
     handleSubmit: materialHandleSubmit,
     register: materialRegister,
-    resetField: materialRestField,
+    resetField: materialResetField,
     formState: { errors: materialErrors },
   } = useForm({ mode: "onChange" });
 
   //Makes sure only numbers are entered
   const pattern = /^[0-9]*$/;
 
-  const submitMaterialLine = (data: FormProps) => {
-    if (data.material) {
-      setMaterial(data.material);
-      materialRestField("material");
-      setAdded(true);
+  const submitMaterialLine = (data: MaterialFieldProps) => {
+    if (data) {
+      setMaterial(data);
+      materialResetField("material_cost");
+      materialResetField("material_name");
     }
   };
 
-  const submitLaborLine = (data: FormProps) => {
-    if (data.labor) {
-      setLabor(data.labor);
-      resetField("labor");
+  const submitLaborLine = (data: LaborFieldProps) => {
+    if (data) {
+      setLabor(data);
+      resetField("labor_name");
+      resetField("labor_cost");
       setAdded(true);
     }
   };
 
   useEffect(() => {
-    if (laborCost && added) {
-      setLabor(0);
-      setAdded(false);
-    } else if (materialCost && added) {
-      setLabor(0);
-      setAdded(false);
+    if (added === true && materialValue) {
+      setMaterial(null);
+    } else {
+      setLabor(null);
     }
-  }, [added, setAdded, setLabor]);
+  }, [added, materialValue, laborValue, setLabor, setMaterial]);
 
   return (
-    <>
+    <div className="form-wrapper">
       <form onSubmit={materialHandleSubmit(submitMaterialLine)}>
-        <div>
+        <div className="form-content">
+          <InputLabel label="Material Type" />
+          <input {...materialRegister("material_name")} />
           <InputLabel label="Material Cost" />
           <input
-            {...materialRegister("material", {
+            {...materialRegister("material_cost", {
               valueAsNumber: true,
               validate: {
                 checkMaterial: (value) => {
@@ -77,10 +80,12 @@ export default function CostsForm(): React.ReactElement {
       </form>
 
       <form onSubmit={handleSubmit(submitLaborLine)}>
-        <div>
+        <div className="form-content">
+          <InputLabel label="Labor Type" />
+          <input {...register("labor_name", { validate: {} })} />
           <InputLabel label="Labor Cost" />
           <input
-            {...register("labor", {
+            {...register("labor_cost", {
               valueAsNumber: true,
               validate: {
                 checkLabor: (value) => {
@@ -97,11 +102,15 @@ export default function CostsForm(): React.ReactElement {
         </div>
         <button type="submit">Add Labor Line</button>
       </form>
-    </>
+    </div>
   );
 }
 
-interface FormProps {
-  material?: number;
-  labor?: number;
+export interface MaterialFieldProps {
+  material_cost?: number;
+  material_name?: string;
+}
+export interface LaborFieldProps {
+  labor_cost?: number;
+  labor_name?: string;
 }
