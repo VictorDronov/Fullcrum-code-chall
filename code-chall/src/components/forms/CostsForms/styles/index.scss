@@ -4,25 +4,24 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  padding: 2rem;
+  padding: 3rem;
   border-radius: 2rem;
   background-color: $gray-3;
   border: 0.2rem solid $white;
-  margin-bottom: 2rem;
-  @include bp($med) {
-    margin-right: 2rem;
-    margin-bottom: 0;
+  min-width: 30rem;
+  @include bp($large) {
+    min-width: 50rem;
   }
   .form-content {
     margin-top: 2rem;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    @include bp($med) {
-      align-items: center;
-    }
     .message {
       color: red;
+    }
+    input {
+      width: 100%;
     }
   }
   button {

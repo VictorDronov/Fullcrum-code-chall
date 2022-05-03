@@ -2,66 +2,36 @@ import React, { useEffect } from "react";
 import { CostSlice } from "../../atoms";
 import "./styles/index.scss";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  labor,
-  lineAdd,
-  material,
-  prevLabor,
-  prevMaterial,
-  totalCost,
-  totalLaborCost,
-  totalMaterialCost,
-} from "../../../utils/state";
-import { getCost } from "../../../utils/helpers";
-import {
-  LaborFieldProps,
-  MaterialFieldProps,
-} from "../../forms/CostsForms/CostsForms";
+import { labor, lineAdd, material, total } from "../../../utils/state";
 
 export default function CostMolecule(): React.ReactElement {
-  const laborValue = useRecoilValue<LaborFieldProps | null>(labor);
-  const materialValue = useRecoilValue<MaterialFieldProps | null>(material);
+  const laborValue = useRecoilValue(labor);
+  const materialValue = useRecoilValue(material);
+  const [totalCost, setTotal] = useRecoilState(total);
 
-  const [totalLabor, setTotalLabor] = useRecoilState(totalLaborCost);
-  const [totalMaterial, setTotalMaterial] = useRecoilState(totalMaterialCost);
-  const [total, setTotal] = useRecoilState(totalCost);
+  const setAdded = useSetRecoilState(lineAdd);
 
-  const setPrevL = useSetRecoilState(prevLabor);
-  const setPrevM = useSetRecoilState(prevMaterial);
+  let sumMaterial = materialValue.reduce(function (prev, current) {
+    return prev + +current.material_cost;
+  }, 0);
 
-  const [added, setAdded] = useRecoilState(lineAdd);
-
-  useEffect(() => {
-    if (materialValue) {
-      setPrevM((prev) => [...prev, materialValue]);
-      console.log(materialValue);
-      setTotalMaterial((prev) => getCost(prev, materialValue.material_cost));
-      setAdded(false);
-    }
-  }, [materialValue, setAdded, setPrevM, setTotalMaterial]);
+  let sumlabor = laborValue.reduce(function (prev, current) {
+    return prev + +current.labor_cost;
+  }, 0);
 
   useEffect(() => {
-    if (laborValue) {
-      setPrevL((prev) => [...prev, laborValue]);
-      setTotalLabor((prev) => getCost(prev, laborValue.labor_cost));
-      setAdded(false);
+    if ((sumMaterial > 0) || (sumlabor > 0)) {
+      setTotal(sumMaterial + sumlabor);
     }
-  }, [laborValue, setAdded, setPrevL, setTotalLabor]);
-
-  useEffect(() => {
-    if (laborValue) {
-      setTotal((prev) => getCost(prev, laborValue.labor_cost));
-    } else if (materialValue) {
-      setTotal((prev) => getCost(prev, materialValue.material_cost));
-    }
-  }, [materialValue, laborValue]);
+    setAdded(true);
+  }, [materialValue, laborValue, setAdded, setTotal, sumMaterial, sumlabor]);
 
   return (
     <div className="cost-m-container">
       <h1>Costs</h1>
-      <CostSlice costType="material" cost={totalMaterial} />
-      <CostSlice costType="labor" cost={totalLabor} />
-      <CostSlice costType="total" cost={total} />
+      <CostSlice costType="material" cost={sumMaterial} />
+      <CostSlice costType="labor" cost={sumlabor} />
+      <CostSlice costType="total" cost={totalCost} />
     </div>
   );
 }

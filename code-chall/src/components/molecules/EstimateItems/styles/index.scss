@@ -1,0 +1,49 @@
+@import "../../../../styles/index.scss";
+
+.cost-items-wrapper {
+  .cost-items-container {
+    backdrop-filter: blur(5px);
+    background-color: $gray-3;
+    display: flex;
+    flex-direction: column;
+    border: 0.2rem solid $white;
+    padding: 2rem;
+    border-radius: 2rem;
+    margin-bottom: 2rem;
+    @include bp($med) {
+      margin-bottom: 0;
+      margin-right: 2rem;
+      padding: 3rem;
+      width: unset;
+    }
+    & > div {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      & > :first-child {
+        margin-bottom: 1rem;
+      }
+      .content {
+        position: relative;
+        .items-list {
+          position: absolute;
+          width: 100%;
+          z-index: 1;
+        }
+        .content-title {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          svg {
+            color: $green-2;
+          }
+        }
+        .hide {
+          svg {
+            z-index: 0;
+            color: $blue-2;
+          }
+        }
+      }
+    }
+  }
+}

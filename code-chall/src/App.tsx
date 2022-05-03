@@ -1,14 +1,13 @@
 import React from "react";
 import { EstimateView } from "./components/views";
-// 3 costs to be calculated for an estimate
-
-// Material Costs
-// Labor Costs & All Inclusive costs(Total?)
+import { MantineProvider } from "@mantine/core";
 
 function App(): React.ReactElement {
   return (
     <div className="App">
-      <EstimateView />
+      <MantineProvider>
+        <EstimateView />
+      </MantineProvider>
     </div>
   );
 }

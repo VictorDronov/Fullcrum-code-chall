@@ -1,116 +1,119 @@
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
-import { labor, material, lineAdd } from "../../../utils/state";
-import { InputLabel } from "../../atoms";
+import React from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { createEstimate, labor, material } from "../../../utils/state";
+import SaveButton from "./SaveButton";
 import "./styles/index.scss";
+import { TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { v4 as uuidv4 } from "uuid";
+
+export interface MaterialProps {
+  id?: string;
+  material_name?: string;
+  material_cost: number;
+}
+export interface LaborProps {
+  id?: string;
+  labor_name?: string;
+  labor_cost: number;
+}
 
 export default function CostsForm(): React.ReactElement {
-  const [laborValue, setLabor] = useRecoilState<LaborFieldProps | null>(labor);
-  const [materialValue, setMaterial] =
-    useRecoilState<MaterialFieldProps | null>(material);
-  const [added, setAdded] = useRecoilState(lineAdd);
+  const setCreate = useSetRecoilState(createEstimate);
 
-  const {
-    handleSubmit,
-    register,
-    resetField,
-    formState: { errors },
-  } = useForm({ mode: "onChange" });
+  const [materialItems, setMaterial] = useRecoilState(material);
+  const [laborItems, setLabor] = useRecoilState(labor);
 
-  const {
-    handleSubmit: materialHandleSubmit,
-    register: materialRegister,
-    resetField: materialResetField,
-    formState: { errors: materialErrors },
-  } = useForm({ mode: "onChange" });
+  const formMaterial = useForm<MaterialProps>({
+    initialValues: {
+      material_name: "",
+      material_cost: 0,
+    },
 
+    validate: {
+      material_cost: (value) =>
+        pattern.test(value.toString()) ? null : "Invalid Entry",
+    },
+  });
+
+  const formLabor = useForm<LaborProps>({
+    initialValues: {
+      labor_name: "",
+      labor_cost: 0,
+    },
+
+    validate: {
+      labor_cost: (value) =>
+        pattern.test(value.toString()) ? null : "Invalid Entry",
+    },
+  });
   //Makes sure only numbers are entered
   const pattern = /^[0-9]*$/;
 
-  const submitMaterialLine = (data: MaterialFieldProps) => {
-    if (data) {
-      setMaterial(data);
-      materialResetField("material_cost");
-      materialResetField("material_name");
-    }
+  const submitFormMaterials = (values: MaterialProps) => {
+    setMaterial([
+      ...materialItems,
+      {
+        id: uuidv4(),
+        material_cost: values.material_cost,
+        material_name: values.material_name,
+      },
+    ]);
+    formMaterial.reset();
   };
 
-  const submitLaborLine = (data: LaborFieldProps) => {
-    if (data) {
-      setLabor(data);
-      resetField("labor_name");
-      resetField("labor_cost");
-      setAdded(true);
-    }
+  const submitFormLabor = (values: LaborProps) => {
+    setLabor([
+      ...laborItems,
+      {
+        id: uuidv4(),
+        labor_cost: values.labor_cost,
+        labor_name: values.labor_name,
+      },
+    ]);
+    formLabor.reset();
   };
-
-  useEffect(() => {
-    if (added === true && materialValue) {
-      setMaterial(null);
-    } else {
-      setLabor(null);
-    }
-  }, [added, materialValue, laborValue, setLabor, setMaterial]);
 
   return (
     <div className="form-wrapper">
-      <form onSubmit={materialHandleSubmit(submitMaterialLine)}>
+      <form
+        onSubmit={formMaterial.onSubmit((values) =>
+          submitFormMaterials(values)
+        )}
+      >
         <div className="form-content">
-          <InputLabel label="Material Type" />
-          <input {...materialRegister("material_name")} />
-          <InputLabel label="Material Cost" />
-          <input
-            {...materialRegister("material_cost", {
-              valueAsNumber: true,
-              validate: {
-                checkMaterial: (value) => {
-                  return pattern.test(value) || "Invalid entry";
-                },
-              },
-            })}
+          <TextInput
+            placeholder="Lumber"
+            required
+            label="Material"
+            {...formMaterial.getInputProps("material_name")}
           />
-          {materialErrors.material && (
-            <div className="message">
-              <span className="red">*</span> {materialErrors.material.message}
-            </div>
-          )}
+          <TextInput
+            required
+            label="Material Cost"
+            {...formMaterial.getInputProps("material_cost")}
+          />
         </div>
         <button type="submit">Add Material Line</button>
       </form>
 
-      <form onSubmit={handleSubmit(submitLaborLine)}>
+      <form onSubmit={formLabor.onSubmit((values) => submitFormLabor(values))}>
         <div className="form-content">
-          <InputLabel label="Labor Type" />
-          <input {...register("labor_name", { validate: {} })} />
-          <InputLabel label="Labor Cost" />
-          <input
-            {...register("labor_cost", {
-              valueAsNumber: true,
-              validate: {
-                checkLabor: (value) => {
-                  return pattern.test(value) || "Invalid entry";
-                },
-              },
-            })}
+          <TextInput
+            placeholder="Carpenter"
+            required
+            label="Labor"
+            {...formLabor.getInputProps("labor_name")}
           />
-          {errors.labor && (
-            <div className="message">
-              <span className="red">*</span> {errors.labor.message}
-            </div>
-          )}
+          <TextInput
+            required
+            label="Labor Cost"
+            {...formLabor.getInputProps("labor_cost")}
+          />
         </div>
         <button type="submit">Add Labor Line</button>
       </form>
+      <SaveButton set={setCreate} />
     </div>
   );
-}
-
-export interface MaterialFieldProps {
-  material_cost?: number;
-  material_name?: string;
-}
-export interface LaborFieldProps {
-  labor_cost?: number;
-  labor_name?: string;
 }
