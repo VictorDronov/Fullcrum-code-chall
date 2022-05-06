@@ -38,4 +38,8 @@
       opacity: 0.9;
     }
   }
+  .save-button:disabled {
+    border: solid 2px $orange-1;
+    background-color: $orange-3;
+  }
 }

@@ -1,6 +1,10 @@
 import React from "react";
 import { CostsForm } from "../../forms";
-import { CostMolecule, EstimateItems } from "../../molecules";
+import {
+  CostMolecule,
+  EstimateItems,
+  PreviousEstimates,
+} from "../../molecules";
 import { EstimateTemplate } from "../../templates";
 import "./styles/index.scss";
 
@@ -14,6 +18,7 @@ export default function EstimateView(): React.ReactElement {
         </div>
         <CostsForm />
       </div>
+      <PreviousEstimates />
     </EstimateTemplate>
   );
 }

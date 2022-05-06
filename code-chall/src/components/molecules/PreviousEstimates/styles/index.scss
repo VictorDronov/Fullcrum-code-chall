@@ -1,0 +1,45 @@
+@import "../../../../styles/index.scss";
+
+.prev-wrapper {
+  margin-top: 2rem;
+  width: 100%;
+  .prev-container {
+    margin: auto;
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+    .fill {
+      padding: 3rem;
+    }
+    .prev-content {
+      width: 20rem;
+      margin: auto;
+      display: flex;
+      margin-top: 1rem;
+      .content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        p {
+          font-size: 1.3rem;
+        }
+      }
+    }
+    button {
+      width: 10rem;
+
+      margin-top: 1.2rem;
+      padding: 0.5rem;
+      border: solid 2px $green-1;
+      background-color: $green-4;
+      border-radius: 2rem;
+      color: inherit;
+      cursor: pointer;
+      min-width: 12rem;
+      &:hover {
+        background-color: $green-3;
+        opacity: 0.9;
+      }
+    }
+  }
+}

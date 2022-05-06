@@ -31,8 +31,7 @@ export default function CostsForm(): React.ReactElement {
     },
 
     validate: {
-      material_cost: (value) =>
-        pattern.test(value.toString()) ? null : "Invalid Entry",
+      material_cost: (value) => (value > 0 ? null : "Invalid Entry"),
     },
   });
 
@@ -43,12 +42,9 @@ export default function CostsForm(): React.ReactElement {
     },
 
     validate: {
-      labor_cost: (value) =>
-        pattern.test(value.toString()) ? null : "Invalid Entry",
+      labor_cost: (value) => (value > 0 ? null : "Invalid Entry"),
     },
   });
-  //Makes sure only numbers are entered
-  const pattern = /^[0-9]*$/;
 
   const submitFormMaterials = (values: MaterialProps) => {
     setMaterial([

@@ -1,5 +1,5 @@
 import react, { Dispatch, SetStateAction, useEffect } from "react";
-import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { useStickyState } from "../../../utils/helpers";
 import { labor, material, total } from "../../../utils/state";
 
@@ -25,7 +25,7 @@ export default function SaveButton({ set }: Buttonprops): react.ReactElement {
       total: totalCost,
     });
     setCount(count + 1);
-    set(false);
+    set(true);
   };
 
   useEffect(() => {
@@ -36,7 +36,15 @@ export default function SaveButton({ set }: Buttonprops): react.ReactElement {
     }
   }, [prevEstimate, resetLabor, resetMaterial, resetTotal]);
 
-  return <button onClick={() => onSave()}>Save</button>;
+  return (
+    <button
+      className="save-button"
+      onClick={() => onSave()}
+      disabled={totalCost > 0 ? false : true}
+    >
+      Save
+    </button>
+  );
 }
 
 interface Buttonprops {
