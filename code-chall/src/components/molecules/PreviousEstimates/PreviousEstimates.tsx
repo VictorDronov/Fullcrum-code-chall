@@ -58,11 +58,12 @@ export default function PreviousEstimates(): React.ReactElement {
                 VIew Previous
               </button>
             )}
-            {info !== null || num === 1 && (
-              <button onClick={() => setNum((prev) => prev + 1)}>
-                VIew Next
-              </button>
-            )}
+            {info !== null ||
+              (num === 1 && (
+                <button onClick={() => setNum((prev) => prev + 1)}>
+                  VIew Next
+                </button>
+              ))}
           </>
         )}
       </div>
