@@ -11,7 +11,7 @@ export default function PreviousEstimates(): React.ReactElement {
   const [created, setCreated] = useRecoilState(createEstimate);
 
   const info = window.localStorage.getItem(`Estimate: ${num}`);
-
+  const count = window.localStorage.getItem("count");
   useEffect(() => {
     if (created === true) setCreated(false);
     if (info !== null) {
@@ -21,7 +21,7 @@ export default function PreviousEstimates(): React.ReactElement {
     if (num < 1) {
       setNum(1);
     }
-  }, [created, info, num, setCreated]);
+  }, [count, created, info, num, setCreated]);
 
   return (
     <div className="prev-wrapper">
@@ -58,12 +58,11 @@ export default function PreviousEstimates(): React.ReactElement {
                 VIew Previous
               </button>
             )}
-            {info !== null ||
-              (num === 1 && (
-                <button onClick={() => setNum((prev) => prev + 1)}>
-                  VIew Next
-                </button>
-              ))}
+            {Number(count) > num && (
+              <button onClick={() => setNum((prev) => prev + 1)}>
+                VIew Next
+              </button>
+            )}
           </>
         )}
       </div>
